@@ -13,6 +13,7 @@ data_ids.each do |id|
 	user u['id'] do
 		home u['home']
 		action [:create]
+		supports :manage_home => true
 	end
 	directory u['home'] + '/.ssh' do
 		owner u['id']
