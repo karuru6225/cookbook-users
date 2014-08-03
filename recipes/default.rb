@@ -13,14 +13,12 @@ data_ids.each do |id|
 	user u['id'] do
 		home u['home']
 		action [:create]
-		notifies :create, "directory["+u['home'] + '/.ssh'+"]"
 	end
 	directory u['home'] + '/.ssh' do
 		owner u['id']
 		group u['id']
 		mode '0700'
-		action [:nothing]
-		notifies :create, "template["+u['home'] + '/.ssh/authorized_keys'+"]"
+		action [:create]
 	end
 	template u['home'] + '/.ssh/authorized_keys' do
 		owner u['id']
@@ -30,6 +28,6 @@ data_ids.each do |id|
 		variables({
 			:pubkey => u['ssh-keys']
 		})
-		action [:nothing]
+		action [:create]
 	end
 end
