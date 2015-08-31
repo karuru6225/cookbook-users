@@ -31,4 +31,11 @@ data_ids.each do |id|
 		})
 		action [:create]
 	end
+        bash "set password " + u['id'] do
+                code <<-EOH
+                        echo #{u['id']} | passwd --stdin #{u['id']}
+                        passwd -e #{u['id']}
+                EOH
+                only_if 'cat /etc/shadow | grep '+u['id']+' | awk -F: \'{ if($2 == "*" || $2 == "!!"){ exit 0; }else{ exit 1; } }\''
+        end
 end
