@@ -36,6 +36,6 @@ data_ids.each do |id|
                         echo #{u['id']} | passwd --stdin #{u['id']}
                         passwd -e #{u['id']}
                 EOH
-                only_if 'cat /etc/passwd | grep '+u['id']
+                not_if 'cat /etc/passwd | grep '+u['id']
         end
 end
