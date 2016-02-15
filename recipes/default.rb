@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-data_ids = data_bag('users')
+data_ids = node['users'] && node['users']['id'] || data_bag('users')
 data_ids.each do |id|
   u = data_bag_item('users', id)
   user u['id'] do
