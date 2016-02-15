@@ -9,33 +9,27 @@
 
 data_ids = data_bag('users')
 data_ids.each do |id|
-	u = data_bag_item('users', id)
-	user u['id'] do
-		home u['home']
-		action [:create]
-		supports :manage_home => true
-	end
-	directory u['home'] + '/.ssh' do
-		owner u['id']
-		group u['id']
-		mode '0700'
-		action [:create]
-	end
-	template u['home'] + '/.ssh/authorized_keys' do
-		owner u['id']
-		group u['id']
-		mode '0600'
-		source 'authorized_keys.erb'
-		variables({
-			:pubkey => u['ssh-keys']
-		})
-		action [:create]
-	end
-        bash "set password " + u['id'] do
-                code <<-EOH
-                        echo #{u['id']} | passwd --stdin #{u['id']}
-                        passwd -e #{u['id']}
-                EOH
-                not_if 'cat /etc/passwd | grep '+u['id']
-        end
+  u = data_bag_item('users', id)
+  user u['id'] do
+    home u['home']
+    password u['password']
+    action [:create]
+    supports :manage_home => true
+  end
+  directory u['home'] + '/.ssh' do
+    owner u['id']
+    group u['id']
+    mode '0700'
+    action [:create]
+  end
+  template u['home'] + '/.ssh/authorized_keys' do
+    owner u['id']
+    group u['id']
+    mode '0600'
+    source 'authorized_keys.erb'
+    variables({
+      :pubkey => u['ssh-keys']
+    })
+    action [:create]
+  end
 end
