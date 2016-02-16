@@ -14,7 +14,7 @@ data_ids.each do |id|
     home u['home']
     password u['password']
     action [:create]
-    supports :manage_home => true
+    supports manage_home: true
   end
   directory u['home'] + '/.ssh' do
     owner u['id']
@@ -27,9 +27,21 @@ data_ids.each do |id|
     group u['id']
     mode '0600'
     source 'authorized_keys.erb'
-    variables({
-      :pubkey => u['ssh-keys']
-    })
+    variables(
+      pubkey: u['ssh-keys']
+    )
     action [:create]
+  end
+  if u['sudoer']
+    template '/etc/sudoers.d/' + u['id'] do
+      owner 'root'
+      group 'root'
+      mode '0440'
+      source 'sudoers.erb'
+      variables(
+        uname: u['id'],
+        nopasswd: u['sudoer']['nopasswd']
+      )
+    end
   end
 end
