@@ -40,7 +40,8 @@ data_ids.each do |id|
       source 'sudoers.erb'
       variables(
         uname: u['id'],
-        nopasswd: u['sudoer']['nopasswd']
+        nopasswd: u['sudoer']['nopasswd'] || false,
+        permit_commands: u['sudoer']['permit_commands'] || ['ALL']
       )
     end
   end

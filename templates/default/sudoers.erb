@@ -1,1 +1,1 @@
-<%= @uname %> ALL=(ALL) <%= @nopasswd ? 'NOPASSWD:' : '' %>ALL
+<%= @uname %> ALL=(ALL) <%= @nopasswd ? 'NOPASSWD:' : '' %><%= @permit_commands.join(', ') %>
