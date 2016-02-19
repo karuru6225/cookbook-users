@@ -15,6 +15,7 @@ data_ids.each do |id|
     password u['password']
     action [:create]
     supports manage_home: true
+    not_if "grep '^#{id}:' /etc/passwd"
   end
   directory u['home'] + '/.ssh' do
     owner u['id']
