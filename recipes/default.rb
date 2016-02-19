@@ -12,15 +12,10 @@ data_ids.each do |id|
   u = data_bag_item('users', id)
   user u['id'] do
     home u['home']
-    password u['password']
+    password u['password'] if u['password']
     action [:create]
     supports manage_home: true
     not_if "grep '^#{id}:' /etc/passwd"
-  end
-  if u['expired']
-    user u['id'] do
-      action :lock
-    end
   end
   directory u['home'] + '/.ssh' do
     owner u['id']
