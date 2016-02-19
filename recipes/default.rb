@@ -17,6 +17,11 @@ data_ids.each do |id|
     supports manage_home: true
     not_if "grep '^#{id}:' /etc/passwd"
   end
+  if u['expired']
+    user u['id'] do
+      action :lock
+    end
+  end
   directory u['home'] + '/.ssh' do
     owner u['id']
     group u['id']
